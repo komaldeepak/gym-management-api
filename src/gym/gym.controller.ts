@@ -1,40 +1,84 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { GymService } from './gym.service';
 import { CreateGymDto } from './dto/create-gym.dto';
 
+@ApiTags('Gym')
 @Controller('gym')
 export class GymController {
-
   constructor(private readonly gymService: GymService) {}
 
+  @ApiOperation({ summary: 'Get all gym members' })
+  @ApiResponse({
+    status: 200,
+    description: 'Gym members fetched successfully',
+  })
   @Get()
-  getAllMembers() {
+  async getAllMembers() {
     return {
       success: true,
-      message: "Gym members fetched successfully",
-      data: this.gymService.findAll(),
+      message: 'Gym members fetched successfully',
+      data: await this.gymService.findAll(),
     };
   }
 
+  @ApiOperation({ summary: 'Get member by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Gym member fetched successfully',
+  })
   @Get(':id')
   getMember(@Param('id') id: string) {
-
-    console.log(id);
-
     return {
-      message: "Member Found",
-      id: id
+      message: 'Member Found',
+      id: id,
     };
-
   }
 
+  @ApiOperation({ summary: 'Create a new gym member' })
+  @ApiResponse({
+    status: 201,
+    description: 'Gym member created successfully',
+  })
   @Post()
-  createMember(@Body() createGymDto: CreateGymDto) {
-
-    console.log(createGymDto);
-
-    return this.gymService.create(createGymDto);
-
+  async createMember(@Body() createGymDto: CreateGymDto) {
+    return await this.gymService.create(createGymDto);
   }
 
+  @ApiOperation({ summary: 'Update a gym member' })
+  @ApiResponse({
+    status: 200,
+    description: 'Gym member updated successfully',
+  })
+  @Put(':id')
+  async updateMember(
+    @Param('id') id: string,
+    @Body() updateData: any,
+  ) {
+    return await this.gymService.update(id, updateData);
+  }
+
+  @ApiOperation({ summary: 'Delete a gym member' })
+  @ApiResponse({
+    status: 200,
+    description: 'Gym member deleted successfully',
+  })
+  @Delete(':id')
+  async deleteMember(
+    @Param('id') id: string,
+  ) {
+    return await this.gymService.delete(id);
+  }
 }
