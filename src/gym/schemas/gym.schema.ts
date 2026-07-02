@@ -1,18 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-export type GymDocument = HydratedDocument<Gym>;
+export type GymDocument =
+  HydratedDocument<Gym>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class Gym {
-  @Prop()
-  name!: string;
+  @Prop({
+    required: true,
+  })
+  name: string;
 
-  @Prop()
-  age!: number;
+  @Prop({
+    required: true,
+  })
+  age: number;
 
-  @Prop()
-  membership!: string;
+  @Prop({
+    required: true,
+  })
+  membership: string;
 }
 
-export const GymSchema = SchemaFactory.createForClass(Gym);
+export const GymSchema =
+  SchemaFactory.createForClass(Gym);

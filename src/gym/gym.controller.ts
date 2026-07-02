@@ -7,73 +7,104 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
+
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
+
 import { GymService } from './gym.service';
 import { CreateGymDto } from './dto/create-gym.dto';
 
 @ApiTags('Gym')
 @Controller('gym')
 export class GymController {
-  constructor(private readonly gymService: GymService) {}
+  constructor(
+    private readonly gymService: GymService,
+  ) {}
 
-  @ApiOperation({ summary: 'Get all gym members' })
+  @ApiOperation({
+    summary: 'Get all gym members',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Gym members fetched successfully',
+    description:
+      'Gym members fetched successfully',
   })
   @Get()
   async getAllMembers() {
     return {
       success: true,
-      message: 'Gym members fetched successfully',
+      message:
+        'Gym members fetched successfully',
       data: await this.gymService.findAll(),
     };
   }
 
-  @ApiOperation({ summary: 'Get member by ID' })
+  @ApiOperation({
+    summary: 'Get member by ID',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Gym member fetched successfully',
+    description:
+      'Gym member fetched successfully',
   })
   @Get(':id')
-  getMember(@Param('id') id: string) {
+  async getMember(
+    @Param('id') id: string,
+  ) {
     return {
-      message: 'Member Found',
-      id: id,
+      success: true,
+      message:
+        'Gym member fetched successfully',
+      data: await this.gymService.findOne(id),
     };
   }
 
-  @ApiOperation({ summary: 'Create a new gym member' })
+  @ApiOperation({
+    summary: 'Create a new gym member',
+  })
   @ApiResponse({
     status: 201,
-    description: 'Gym member created successfully',
+    description:
+      'Gym member created successfully',
   })
   @Post()
-  async createMember(@Body() createGymDto: CreateGymDto) {
-    return await this.gymService.create(createGymDto);
+  async createMember(
+    @Body() createGymDto: CreateGymDto,
+  ) {
+    return await this.gymService.create(
+      createGymDto,
+    );
   }
 
-  @ApiOperation({ summary: 'Update a gym member' })
+  @ApiOperation({
+    summary: 'Update a gym member',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Gym member updated successfully',
+    description:
+      'Gym member updated successfully',
   })
   @Put(':id')
   async updateMember(
     @Param('id') id: string,
     @Body() updateData: any,
   ) {
-    return await this.gymService.update(id, updateData);
+    return await this.gymService.update(
+      id,
+      updateData,
+    );
   }
 
-  @ApiOperation({ summary: 'Delete a gym member' })
+  @ApiOperation({
+    summary: 'Delete a gym member',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Gym member deleted successfully',
+    description:
+      'Gym member deleted successfully',
   })
   @Delete(':id')
   async deleteMember(
