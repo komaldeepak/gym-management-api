@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { GymModule } from './gym/gym.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module';
     GymModule,
     AuthModule,
     UsersModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

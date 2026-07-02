@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 
 import {
@@ -16,6 +17,7 @@ import {
 
 import { GymService } from './gym.service';
 import { CreateGymDto } from './dto/create-gym.dto';
+import { QueryGymDto } from './dto/query-gym.dto';
 
 @ApiTags('Gym')
 @Controller('gym')
@@ -33,12 +35,16 @@ export class GymController {
       'Gym members fetched successfully',
   })
   @Get()
-  async getAllMembers() {
+  async getAllMembers(
+    @Query() query: QueryGymDto,
+  ) {
     return {
       success: true,
       message:
         'Gym members fetched successfully',
-      data: await this.gymService.findAll(),
+      data: await this.gymService.findAll(
+        query,
+      ),
     };
   }
 
